@@ -1,0 +1,55 @@
+@startuml
+
+class OilCompany{
+    -extractors:List<Extractor>
+    +addExtractor(extractor: Extractor)void
+    +getNumberOfDevicesWithFaults():int
+    +getExtractorsThatExtractedMoreThen95():List<Extractor>
+}
+
+abstract class Extractor{
+    #id:UUID
+    #capacity:int
+    #quantity:int
+    #canReportFaults:boolean
+}
+
+class FixedTerrestrial extends ExtractorWithLocation{
+
+}
+
+class MobileTerrestrial extends ExtractorWithLocation implements ReportFault{
+
+}
+
+abstract class ExtractorWithLocation extends Extractor{
+    -location:String
+}
+
+class OffshorePlatform extends Extractor implements ReportFault{
+
+    -workers:List<Worker>
+    +addWorker(worker:Worker):void
+}
+
+interface ReportFault{
+    {abstract}reportFault():boolean
+}
+
+class Worker{
+    -name:String
+    -position:Position
+    -numberOfDaysOnPlatform:int
+}
+
+enum Position{
+    MANUAL_WORKER,
+    MEDIC,
+    MANAGER
+}
+
+OilCompany *--Extractor
+OffshorePlatform *-- Worker
+Worker --> Position
+
+@enduml
